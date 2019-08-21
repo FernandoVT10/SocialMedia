@@ -1,0 +1,21 @@
+.spinner {
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: white;
+
+    &.active {
+        display: flex;
+    }
+
+    & .spinner-border {
+        width: 80px;
+        height: 80px;
+    }
+}

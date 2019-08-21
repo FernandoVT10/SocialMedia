@@ -22,7 +22,7 @@ class Navbar extends Component {
                             </Link>
                         </li>
                         <li className="nav-item active">
-                            <Link className="nav-link" to="/myProfile/">
+                            <Link className="nav-link" to="/profile/">
                                 <span className="fas fa-user"></span>
                             </Link>
                         </li>

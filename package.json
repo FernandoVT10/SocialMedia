@@ -5,12 +5,17 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently \"node server.js\" \"webpack -w\""
+    "dev": "concurrently \"nodemon server.js\" \"webpack -w\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "express-fileupload": "^1.1.5",
+    "jsonwebtoken": "^8.5.1",
+    "mongojs": "^2.6.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1"
@@ -20,7 +25,6 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
-    "babel-preset-react": "^6.24.1",
     "concurrently": "^4.1.1",
     "css-loader": "^3.2.0",
     "node-sass": "^4.12.0",
