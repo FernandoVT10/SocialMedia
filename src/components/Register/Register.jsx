@@ -47,7 +47,7 @@ class Register extends Component {
         } else if(this.state.password.length < 6) {
             this.setState({error: "The password must be at least 6 characters"});
             return;
-        } else if(this.state.password.length !== this.state.repeatPassword.length) {
+        } else if(this.state.password !== this.state.repeatPassword) {
             this.setState({error: "Passwords do not match"});
             return;
         }
@@ -121,7 +121,7 @@ class Register extends Component {
 
                     <button>Sign Up</button>
 
-                    <Link to="/register/">Do you already have an account?</Link>
+                    <Link to="/login/">Do you already have an account?</Link>
                 </form>
             </div>
         );

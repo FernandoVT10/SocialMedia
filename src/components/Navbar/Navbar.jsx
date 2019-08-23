@@ -4,6 +4,27 @@ import { Link } from "react-router-dom";
 import "./Navbar.scss";
 
 class Navbar extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            username: ""
+        };
+    }
+
+    UNSAFE_componentWillMount() {
+        fetch("/api/users/getUserByToken/",
+        {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + window.localStorage.token
+            }
+        })
+        .then(res => res.json())
+        .then(res => this.setState({username: res.Username}))
+        .catch(e => console.log(e));
+    }
+
     render() {
         return (
             <nav className="navbar navbar-expand navbar-dark bg-dark">
@@ -17,12 +38,12 @@ class Navbar extends Component {
                             </Link>
                         </li>
                         <li className="nav-item active">
-                            <Link className="nav-link" to="/users/">
-                                <span className="fas fa-search"></span>
+                            <Link className="nav-link" to="/explore/">
+                                <span className="far fa-compass"></span>
                             </Link>
                         </li>
                         <li className="nav-item active">
-                            <Link className="nav-link" to="/profile/">
+                            <Link className="nav-link" to={`/profile/${this.state.username}`}>
                                 <span className="fas fa-user"></span>
                             </Link>
                         </li>

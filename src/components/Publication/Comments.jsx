@@ -12,7 +12,7 @@ class Comments extends Component {
             offset: false
         }
 
-        this.limit = 10;
+        this.limit = 3;
         this.offset = 0;
     }
 
@@ -34,7 +34,7 @@ class Comments extends Component {
         })
         .then(res => res.json())
         .then(res => {
-            if(res.length === 10) {
+            if(res.length === this.limit) {
                 this.setState({offset: true});
             } else {
                 this.setState({offset: false});

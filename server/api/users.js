@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtSecretKey = require("../jwtSecretKey");
+const jwtAuthentication = require("../jwtAuthentication");
 
 const mongojs = require("mongojs");
 const db = mongojs("socialmedia");
@@ -116,6 +117,92 @@ router.post("/login/", (req, res) => {
     } else {
         res.sendStatus(403);
     }
+});
+
+router.get("/getProfile/:username", jwtAuthentication, (req, res) => {
+    const username = req.params.username;
+
+    db.collection("Users").findOne({Username: username}, (err, userData) => {
+        if(userData) {
+            const userId = String(userData._id);
+            
+            db.collection("Followers").count({FollowerId: userId}, (err, following) => {
+                userData.following = following;
+
+                db.collection("Followers").count({UserId: userId}, (err, followers) => {
+                    userData.followers = followers;
+                    
+                    db.collection("Followers")
+                    .findOne({UserId: userId, FollowerId: req.userId},
+                    (err, followingStatus) => {
+                        if(followingStatus) {
+                            userData.followingStatus = true;
+                        } else {
+                            userData.followingStatus = false;
+                        }
+
+                        // delete provide data
+                        delete userData.Password;
+                        delete userData.Email;
+
+                        res.json(userData);
+                    });
+                });
+            });
+        } else {
+            res.json({
+                error: "The profile not exists"
+            });
+        }
+    });
+});
+
+router.get("/getUserByToken/", jwtAuthentication, (req, res) => {
+    const userId = mongojs.ObjectId(req.userId);
+
+    db.collection("Users").findOne({_id: userId}, (err, userData) => {
+        if(userData) {
+            res.json(userData);
+        } else {
+            res.sendStatus(403);
+        }
+    });
+});
+
+router.get("/getUsers/:limit/:offset", (req, res) => {
+    const limit = parseInt(req.params.limit || 0);
+    const offset = parseInt(req.params.offset || 0);
+
+    db.collection("Users")
+    .find()
+    .limit(limit)
+    .skip(offset, (err, usersData) => {
+        if(usersData) {
+            const users = usersData.map(user => ({username: user.Username, image: user.Image}));
+            res.json(users);
+        } else {
+            res.json([]);
+        }
+    });
+});
+
+router.get("/searchUsers/:search/:limit/:offset", (req, res) => {
+    const search = req.params.search;
+    const limit = parseInt(req.params.limit || 0);
+    const offset = parseInt(req.params.offset || 0);
+    console.log("a");
+
+    db.collection("Users")
+    .find({Username: {$regex: search}})
+    .limit(limit)
+    .skip(offset, (err, usersData) => {
+        if(usersData) {
+            const users = usersData.map(user => ({username: user.Username, image: user.Image}));
+            res.json(users);
+        } else {
+            res.json([]);
+        }
+    });
 });
 
 module.exports = router;

@@ -15,11 +15,15 @@
             color: black;
         }
 
-        & img {
+        & .image {
+            display: inline-block;
+            vertical-align: middle;
             width: 40px;
             height: 40px;
             margin-right: 10px;
             border-radius: 50%;
+            background-position: center !important;
+            background-size: cover !important;
         }
     }
 

@@ -17,7 +17,7 @@ router.post("/like/", jwtAuthentication, (req, res) => {
 
                 db.collection("Likes")
                 .remove({UserId: userId, PublicationId: String(publicationId)}, (err, status) => {
-                        // if no line is deleted, we add the like
+                    // if no line is deleted, we add the like
                     if(!status.deletedCount) {
                         const newLike = {
                             UserId: userId,

@@ -7,8 +7,44 @@ const fs = require("fs");
 const mongojs = require("mongojs");
 const db = mongojs("socialmedia");
 
-router.get("/getPublications/", jwtAuthentication, (req, res) => {
-    db.collection("Publications").find().sort({Date: -1}, (err, docs) => {
+router.get("/getPublications/:limit/:offset/", jwtAuthentication, (req, res) => {
+    const userId = req.userId;
+    const limit = parseInt(req.params.limit || 0);
+    const offset = parseInt(req.params.offset || 0);
+
+    // get following id
+
+    db.collection("Followers").find({FollowerId: userId}, (err, followers) => {
+        if(followers) {
+            const usersIds = followers.map(follower => follower.UserId);
+            usersIds.push(userId);
+
+            db.collection("Publications")
+            .find({UserId: {$in: usersIds}})
+            .limit(limit)
+            .skip(offset)
+            .sort({Date: -1}, (err, docs) => {
+                if(!res) {
+                    res.json([]);
+                } else {
+                    getUsers(docs, "publications", req.userId).then(publications => {
+                        res.json(publications);
+                    });
+                }
+            });
+        }
+    });
+});
+
+router.get("/getProfilePublications/:userId/:limit/:offset/", jwtAuthentication, (req, res) => {
+    const userId = req.params.userId;
+    const limit = parseInt(req.params.limit || 0);
+    const offset = parseInt(req.params.offset || 0);
+
+    db.collection("Publications").find({UserId: userId})
+    .limit(limit)
+    .skip(offset)
+    .sort({Date: -1}, (err, docs) => {
         if(!res) {
             res.json([]);
         } else {

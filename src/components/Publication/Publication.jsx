@@ -73,13 +73,15 @@ class Publication extends Component {
         return (
             <div className={`publication ${publicationClass}`}>
                 <div className="caption">
-                    <Link to={`/profile/${user.Id}`}>
-                        <img src={`img/users/${user.Image}`}></img>
+                    <Link to={`/profile/${user.Username}`}>
+                        <div
+                        className="image"
+                        style={{background: `url(${__dirname}img/users/${user.Image})`}}></div>
                         {user.Username}
                     </Link>
                 </div>
 
-                <img src={`img/publications/${publication.Image}`} alt="Publication Image"></img>
+                <img src={`${__dirname}img/publications/${publication.Image}`} alt="Publication Image" />
 
                 <p className="message">
                     {publication.Content}

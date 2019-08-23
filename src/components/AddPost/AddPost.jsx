@@ -39,8 +39,6 @@ class AddPost extends Component {
         formData.append("imageFile", this.state.imageFile);
         formData.append("content", this.state.content);
 
-        console.log(formData);
-
         fetch("/api/publications/addPublication/",
         {
             method: "POST",
