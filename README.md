@@ -1,19 +1,13 @@
 # SocialMedia Project
-Create a social media similar to **Instagram** with **ReactJS**, **NodeJS**, **MongoDB**
+This a social media similar to **Instagram** created with **ReactJS**, **NodeJS**, **MongoDB**
 and **Bootstrap**.
 
-### MongoDB database
-* Name `socialmedia`
-**Collections**
-* Comments
-* Followers
-* Likes
-* Publications
-* Users
+![Website gif](github/project-gif.gif)
 
 ### Running
 * Clone repository
 * Run MongoDB Server
 * Run `npm install`
+* Run `npm run build`
 * Run `npm start`
 * Go to `http://localhost:3000`
